@@ -1,0 +1,13 @@
+.outer-div
+{
+     position: absolute;
+     bottom: 30px;
+     width: 50%;
+}
+.inner-div
+{
+     margin: 0 auto;
+     width: 100px;
+     height: 100px;
+     background-color: #ccc;
+}
