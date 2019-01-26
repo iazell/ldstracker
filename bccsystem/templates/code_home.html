@@ -41,9 +41,7 @@
             <div class="panel panel-default tab-pane active outer-div" id="property_tab" role="tabpanel" style="margin:0px auto">
                 <div class="panel-heading">Fill in all the necessary fields</div>
                     <div class="panel-body">
-                      <form method="POST" action="/addstudent/">
-                        {% csrf_token %}
-                          <div class="inner">
+                          <div class="inner">                           
                               <table>
                                   <tr><th>Student Number: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control form" id="student_number"></td></tr>
                                   <tr><th>Name: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_name"></td></tr>
@@ -58,13 +56,12 @@
                               <button style="margin-left: 20px;" class="btn btn-primary button" onclick="submit_request_property()">Generate Code</button>
                               <button style="margin-left: 20px;" class="btn btn-warning button" onclick="clear_fields()">Clear</button>
                           </div>
-                        </form>
                     <div style="padding-left: 20%;">
                         <br><br><br><br>
                         <img id="preview_property_tag"/>
                         <br><br>
                         <input type="hidden" name="data_property" id="data_property">
-                        <button id="print_button" class="btn btn-success" onclick="print_property_tag()" style="display: none; margin-left: 230px;">Save</button>
+                        <button id="print_button" class="btn btn-success" onclick="print_property_tag()" style="display: none; margin-left: 190px;">Save Student Details</button>
                     </div>
                 </div>
             </div>
@@ -112,13 +109,28 @@
             }
 
             function print_property_tag(){
-                var data = document.getElementById('data_property').value;               
-                var link = document.createElement('a');
-                link.href = 'images.jpg';
-                link.download = data;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                // var data = document.getElementById('data_property').value;               
+                // var link = document.createElement('a');
+                // link.href = 'images.jpg';
+                // link.download = data;
+                // document.body.appendChild(link);
+                // link.click();
+                // document.body.removeChild(link);
+
+                var student_number = document.getElementById('student_number').value;
+                var student_name = document.getElementById('student_name').value;
+                var student_nickname = document.getElementById('student_nickname').value;
+                var student_birthdate = document.getElementById('student_birthdate').value;
+                var student_contact = document.getElementById('student_contact').value;
+                var student_leader = document.getElementById('student_leader').value;
+                var student_contactleader = document.getElementById('student_contactleader').value;
+                var student_network = document.getElementById('student_network').value;
+                $.getJSON("addstudent/?student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
+                });
+
             }
         </script>
     </body>

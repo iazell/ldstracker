@@ -66,16 +66,16 @@ def print(request):
 
 
 def addstudent(request):
-    if request.method == 'POST':
-        student_number = request.POST.get('student_number', None)
-        student_name = request.POST.get('student_name', None)
-        student_nickname = request.POST.get('student_nickname', None)
-        student_birthdate = request.POST.get('student_birthdate', None)
-        student_contact = request.POST.get('student_contact', None)
-        student_leader = request.POST.get('student_leader', None)
-        student_contactleader = request.POST.get('student_contactleader', None)
-        student_network = request.POST.get('student_network', None)
-        agent_instance = Students.objects.create(
+    if request.method == 'GET':
+        student_number = request.GET.get('student_number')
+        student_name = request.GET.get('student_name')
+        student_nickname = request.GET.get('student_nickname')
+        student_birthdate = request.GET.get('student_birthdate')
+        student_contact = request.GET.get('student_contact')
+        student_leader = request.GET.get('student_leader')
+        student_contactleader = request.GET.get('student_contactleader')
+        student_network = request.GET.get('student_network')
+        student_instance = Students.objects.create(
             student_number = student_number,
             student_name = student_name,
             student_nickname = student_nickname,
@@ -85,14 +85,7 @@ def addstudent(request):
             student_contactleader = student_contactleader,
             student_network = student_network
         )
-        
-        if Students.objects.filter(student_number = student_number).exists():
-            string1 = ["Success"]
-            messages.success(request, string1)
-        else:
-            string1 = ['Failed to add student']
-            messages.error(request, string1)
-    return HttpResponseRedirect('/studentstab/')
+    return JsonResponse({'message': 'Success!'})
 
 def studentstab(request):
     students = Students.objects.all()
