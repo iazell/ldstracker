@@ -62,7 +62,7 @@
                                   <tr><th>Level: </th>
                                     <td style="padding-top: 5px; padding-left: 5px;">
                                     <form class="form-inline">
-                                      <select class="custom-select my-1 mr-sm-2 form-control form" id="student_level">
+                                      <select class="custom-select my-1 mr-sm-2 form-control form" onChange=selectedLevel() id="student_level">
                                         <option selected>Choose...</option>
                                         <option value="1">Lifeclass</option>
                                         <option value="2">School of Leaders 1</option>
@@ -72,12 +72,7 @@
                                     </td>
                                   </tr>
                                   <tr><th>Student Number: </th><td style="padding-top: 5px; padding-left: 5px;">
-                                    {% if student_level != 1 %}
-                                        <input type="text" class="form-control form" id="student_number" value="{% now 'y' %} - {{ studentnum }}" disabled>
-                                    {% else %}
-                                        <input type="text" class="form-control form" id="student_number">
-                                    {% endif %}
-                                </td></tr>
+                                    <input type="text" class="form-control form" id="student_number" value="{% now 'y' %} - {{ studentnum }}" disabled></td></tr>
                                   <tr><th>Name: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_name"></td></tr>
                                   <tr><th>Nickname: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_nickname"></td></tr>
                                   <tr><th>Birthdate: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="date" class="form-control" id="student_birthdate"></td></tr>
@@ -105,6 +100,16 @@
             <img style="height: 200px; width: 200px;" src="{% static 'img/spin.gif' %}" />
         </div>
         <script type="text/javascript">
+            function selectedLevel() {
+                var level = document.getElementById('student_level').value;
+                if(level!=1){
+                    document.getElementById("student_number").disabled = false;
+                    document.getElementById("student_number").value = '';
+                }else{
+                    document.getElementById("student_number").disabled = true;
+                    document.getElementById("student_number").value = "{% now 'y' %} - {{ studentnum }}";
+                }
+            }
             function submit_request_property(){
                 $("#loading_img").modal('show');
                 var student_level = document.getElementById('student_level').value;
