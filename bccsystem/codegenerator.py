@@ -7,11 +7,11 @@ DEFAULT_IMG_MODE = 'RGB'
 DEFAULT_IMG_BGCOLOR = 'white'
 
 class CodeGenerator:
-    def __init__(self, student_number, student_name, student_nickname, student_birthdate, student_contact, student_leader, student_contactleader, student_network):
+    def __init__(self, student_level, student_number, student_name, student_nickname, student_birthdate, student_contact, student_leader, student_contactleader, student_network):
         # create image
         self.code = Image.new(DEFAULT_IMG_MODE, DEFAULT_IMG_SIZE, DEFAULT_IMG_BGCOLOR)
 
-        student_details = student_number + student_name + student_nickname + student_birthdate + student_contact + student_leader + student_contactleader + student_network
+        student_details = student_level + student_number + student_name + student_nickname + student_birthdate + student_contact + student_leader + student_contactleader + student_network
         qrcode = elaphe.barcode('qrcode', student_details, options=dict(version=3), scale=3)
         self.code.paste(qrcode, (200,5))
 

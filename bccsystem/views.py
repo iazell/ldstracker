@@ -31,10 +31,11 @@ def index(request):
             return response
     else:
         form = StudentForm()
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'code_home.html', {'form': form})
 
 def generate(request):
     if request.method == 'GET':
+        student_level = request.GET.get('student_level')
         student_number = request.GET.get('student_number')
         student_name = request.GET.get('student_name')
         student_nickname = request.GET.get('student_nickname')
@@ -43,7 +44,7 @@ def generate(request):
         student_leader = request.GET.get('student_leader')
         student_contactleader = request.GET.get('student_contactleader')
         student_network = request.GET.get('student_network')
-        qr_code = CodeGenerator(student_number, student_name, student_nickname, student_birthdate, student_contact, student_leader, student_contactleader, student_network)
+        qr_code = CodeGenerator(student_level, student_number, student_name, student_nickname, student_birthdate, student_contact, student_leader, student_contactleader, student_network)
         buffered = BytesIO()
         qr_code.save(buffered)
         code_64_encode = base64.b64encode(buffered.getvalue())
@@ -67,6 +68,7 @@ def print(request):
 
 def addstudent(request):
     if request.method == 'GET':
+        student_level = request.GET.get('student_level')
         student_number = request.GET.get('student_number')
         student_name = request.GET.get('student_name')
         student_nickname = request.GET.get('student_nickname')
@@ -92,4 +94,10 @@ def studentstab(request):
     return render(request, 'student.html', {'students': students})
 
 def home(request):
-    return render(request, 'code_home.html')
+    try:
+        studentnum = Students.objects.latest().student_number
+        studentnum = int(studentnum[-3:]) + 1
+        studentnum = '%03d' % studentnum
+    except Students.DoesNotExist:
+        studentnum = '000'
+    return render(request, 'code_home.html', {'studentnum':studentnum})

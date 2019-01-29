@@ -12,8 +12,9 @@ class Codes(models.Model):
 
 
 class Students(models.Model):
+    student_level = models.CharField(max_length=200,null=True,blank=True)
     student_number = models.CharField(max_length=200,null=True,blank=True)
-    student_name = models.CharField(max_length=200,null=True,blank=True)
+    student_name = models.CharField(max_length=3,null=True,blank=True,default='000')
     student_nickname = models.CharField(max_length=200,null=True,blank=True)
     student_birthdate = models.CharField(max_length=200,null=True,blank=True)
     student_contact = models.CharField(max_length=200,null=True,blank=True)
@@ -22,4 +23,4 @@ class Students(models.Model):
     student_network = models.CharField(max_length=200,null=True,blank=True)
     
     class Meta:
-        app_label = 'blog'
+        get_latest_by = ['student_number']
