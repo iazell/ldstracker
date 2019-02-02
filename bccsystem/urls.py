@@ -10,6 +10,7 @@ urlpatterns = [
     path('sol1students/', views.sol1students),
     path('sol2students/', views.sol2students),
     path('searchStudent/', views.searchStudent),
+    path('editstudent/', views.editstudent),
 
     path('admin/', admin.site.urls),
 ]

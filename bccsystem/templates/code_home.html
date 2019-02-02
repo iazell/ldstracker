@@ -59,7 +59,7 @@
         </nav>
         <div class="tab-content">
             <div class="panel panel-default tab-pane active outer-div" id="property_tab" role="tabpanel" style="margin:0px auto">
-                <div class="panel-heading">Fill in all the necessary fields</div>
+                <div class="panel-heading">Fill in all the necessary fields</div>                
                     <div class="panel-body">
                           <div class="inner">                        
                               <table>
@@ -105,7 +105,7 @@
             <div class="modal-dialog modal-sm">
               <div class="modal-content">
                 <div class="modal-body">
-                  <p>Input Fields are required.</p>
+                  <p id="alert_message">Input fields are required.</p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -150,8 +150,14 @@
                              </div><div class="modal-footer">
                         <table>
                             <tr>
-                                <td><button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button></td>
-                                <td><button type="submit" class="btn btn-default" style="margin-left: 10px;" id="edit_student" onclick="editStudent()"></button>Edit Student</td>
+                                <td><button type="button" class="btn btn-info" data-dismiss="modal" id="save_edit">Cancel</button></td>
+                                <td><button type="submit" class="btn btn-success" style="margin-left: 10px;" id="edit_student" onclick="editStudent()">Edit Student</button</td>
+                            </tr>
+                            <tr>
+                              <div style="padding-left: 50%;">
+                              <td><img id="image_code" style="margin-left: 130px;"/></td>
+                              <td><input type="hidden" name="image_property" id="image_property"></td>
+                            </div>
                             </tr>
                         </table>
                     </div>
@@ -161,7 +167,6 @@
     </div>
         <script type="text/javascript">
             function editStudent(){
-                document.getElementById('details_student_level').removeAttribute('readonly');
                 document.getElementById('details_student_name').removeAttribute('readonly');
                 document.getElementById('details_student_nickname').removeAttribute('readonly');
                 document.getElementById('details_student_birthdate').removeAttribute('readonly');
@@ -169,8 +174,57 @@
                 document.getElementById('details_student_leader').removeAttribute('readonly');
                 document.getElementById('details_student_contactleader').removeAttribute('readonly');
                 document.getElementById('details_student_network').removeAttribute('readonly');
-                document.getElementById('edit_student').value = "Generate new code";
-            }
+                document.getElementById('save_edit').innerHTML = "Save new student details";
+                document.getElementById('save_edit').removeAttribute('data-dismiss');
+                document.getElementById('edit_student').innerHTML = "Generate new code"
+
+                document.getElementById('edit_student').addEventListener("click", function(){
+                  var student_level = document.getElementById('details_student_level').value;
+                  var student_number = document.getElementById('details_student_number').value;
+                  var student_name = document.getElementById('details_student_name').value;
+                  var student_nickname = document.getElementById('details_student_nickname').value;
+                  var student_birthdate = document.getElementById('details_student_birthdate').value;
+                  var student_contact = document.getElementById('details_student_contact').value;
+                  var student_leader = document.getElementById('details_student_leader').value;
+                  var student_contactleader = document.getElementById('details_student_contactleader').value;
+                  var student_network = document.getElementById('details_student_network').value;
+                   $("#loading_img").modal('show');                
+                    $.getJSON("generate/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                          document.getElementById('image_code').width = "200";
+                          document.getElementById('image_code').height = "200";
+                          document.getElementById('image_code').src = "data:image/png;base64, " + result.code;
+                          document.getElementById('image_property').value = result.id;                          
+                        $("#loading_img").modal('hide');
+                    }).fail(function( jqxhr, textStatus, error ) {
+                        var err = textStatus + ', ' + error;
+                        alert( "Request Failed: " + err);
+                        $("#loading_img").modal('hide');
+                    });
+                }, false);
+
+                document.getElementById('save_edit').addEventListener("click", function(){
+                  var student_level = document.getElementById('details_student_level').value;
+                  var student_number = document.getElementById('details_student_number').value;
+                  var student_name = document.getElementById('details_student_name').value;
+                  var student_nickname = document.getElementById('details_student_nickname').value;
+                  var student_birthdate = document.getElementById('details_student_birthdate').value;
+                  var student_contact = document.getElementById('details_student_contact').value;
+                  var student_leader = document.getElementById('details_student_leader').value;
+                  var student_contactleader = document.getElementById('details_student_contactleader').value;
+                  var student_network = document.getElementById('details_student_network').value;
+                  console.log(student_level);
+                   // $("#loading_img").modal('show');                
+                      $.getJSON("editstudent/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                        // $("#loading_img").modal('hide');
+                        $("#student_details").modal('hide'); 
+                        document.getElementById('alert_message').innerHTML = result.message;
+                        $("#alertModal").modal('show');
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
+                });
+            },false);
+         }
 
             function searchStudent(){
               var student_searchnum = document.getElementById('student_searchnum').value;
@@ -237,6 +291,8 @@
                 });
 
                 $.getJSON("addstudent/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                    document.getElementById('alert_message').innerHTML = result.message;
+                    $("#alertModal").modal('show');
                 }).fail(function( jqxhr, textStatus, error ) {
                     var err = textStatus + ', ' + error;
                     alert( "Request Failed: " + err);
