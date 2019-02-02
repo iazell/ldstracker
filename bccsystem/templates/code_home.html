@@ -150,12 +150,17 @@
                              </div><div class="modal-footer">
                         <table>
                             <tr>
-                                <td><button type="button" class="btn btn-info" data-dismiss="modal" id="save_edit">Cancel</button></td>
+                                <td><button type="button" class="btn btn-info" id="save_edit" onclick="getQrCode()">Get QR Code</button></td>
                                 <td><button type="submit" class="btn btn-success" style="margin-left: 10px;" id="edit_student" onclick="editStudent()">Edit Student</button</td>
                             </tr>
                             <tr>
                               <div style="padding-left: 50%;">
-                              <td><img id="image_code" style="margin-left: 130px;"/></td>
+                              <td>
+                                <!-- <img id="image_code" style="margin-left: 130px;"/> -->
+                                <a id="image_download" download>
+                                  <img id="image_code" style="margin-left: 130px;">
+                                </a>
+                              </td>
                               <td><input type="hidden" name="image_property" id="image_property"></td>
                             </div>
                             </tr>
@@ -166,6 +171,33 @@
         </div>
     </div>
         <script type="text/javascript">
+            function getQrCode(){
+              var student_level = document.getElementById('details_student_level').value;
+              var student_number = document.getElementById('details_student_number').value;
+              var student_name = document.getElementById('details_student_name').value;
+              var student_nickname = document.getElementById('details_student_nickname').value;
+              var student_birthdate = document.getElementById('details_student_birthdate').value;
+              var student_contact = document.getElementById('details_student_contact').value;
+              var student_leader = document.getElementById('details_student_leader').value;
+              var student_contactleader = document.getElementById('details_student_contactleader').value;
+              var student_network = document.getElementById('details_student_network').value;
+
+              $("#loading_img").modal('show');                
+                $.getJSON("generate/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                      document.getElementById('image_code').width = "200";
+                      document.getElementById('image_code').height = "200";
+                      document.getElementById('image_code').src = "data:image/png;base64, " + result.code;
+                      document.getElementById('image_property').value = result.id;      
+                      console.log(result.filename) 
+                      document.getElementById('image_download').href = result.filename;      
+                    $("#loading_img").modal('hide');
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
+                    $("#loading_img").modal('hide');
+                });
+            }
+
             function editStudent(){
                 document.getElementById('details_student_name').removeAttribute('readonly');
                 document.getElementById('details_student_nickname').removeAttribute('readonly');
@@ -176,31 +208,35 @@
                 document.getElementById('details_student_network').removeAttribute('readonly');
                 document.getElementById('save_edit').innerHTML = "Save new student details";
                 document.getElementById('save_edit').removeAttribute('data-dismiss');
-                document.getElementById('edit_student').innerHTML = "Generate new code"
+                document.getElementById('edit_student').innerHTML = "Generate new code"                
+                document.getElementById('image_code').width = "0";
+                document.getElementById('image_code').height = "0";
+                document.getElementById('image_code').src = "";
+                document.getElementById('image_property').value = "";      
 
                 document.getElementById('edit_student').addEventListener("click", function(){
-                  var student_level = document.getElementById('details_student_level').value;
-                  var student_number = document.getElementById('details_student_number').value;
-                  var student_name = document.getElementById('details_student_name').value;
-                  var student_nickname = document.getElementById('details_student_nickname').value;
-                  var student_birthdate = document.getElementById('details_student_birthdate').value;
-                  var student_contact = document.getElementById('details_student_contact').value;
-                  var student_leader = document.getElementById('details_student_leader').value;
-                  var student_contactleader = document.getElementById('details_student_contactleader').value;
-                  var student_network = document.getElementById('details_student_network').value;
-                   $("#loading_img").modal('show');                
-                    $.getJSON("generate/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
-                          document.getElementById('image_code').width = "200";
-                          document.getElementById('image_code').height = "200";
-                          document.getElementById('image_code').src = "data:image/png;base64, " + result.code;
-                          document.getElementById('image_property').value = result.id;                          
-                        $("#loading_img").modal('hide');
-                    }).fail(function( jqxhr, textStatus, error ) {
-                        var err = textStatus + ', ' + error;
-                        alert( "Request Failed: " + err);
-                        $("#loading_img").modal('hide');
-                    });
-                }, false);
+                var student_level = document.getElementById('details_student_level').value;
+                var student_number = document.getElementById('details_student_number').value;
+                var student_name = document.getElementById('details_student_name').value;
+                var student_nickname = document.getElementById('details_student_nickname').value;
+                var student_birthdate = document.getElementById('details_student_birthdate').value;
+                var student_contact = document.getElementById('details_student_contact').value;
+                var student_leader = document.getElementById('details_student_leader').value;
+                var student_contactleader = document.getElementById('details_student_contactleader').value;
+                var student_network = document.getElementById('details_student_network').value;
+               $("#loading_img").modal('show');                
+                $.getJSON("generate/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                      document.getElementById('image_code').width = "200";
+                      document.getElementById('image_code').height = "200";
+                      document.getElementById('image_code').src = "data:image/png;base64, " + result.code;
+                      document.getElementById('image_property').value = result.id;                          
+                    $("#loading_img").modal('hide');
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
+                    $("#loading_img").modal('hide');
+                });
+            }, false);
 
                 document.getElementById('save_edit').addEventListener("click", function(){
                   var student_level = document.getElementById('details_student_level').value;

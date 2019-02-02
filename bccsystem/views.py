@@ -52,7 +52,7 @@ def generate(request):
             code_bytes = code_64_encode
         )
 
-        directory = os.path.expanduser('~/Downloads')
+        directory = os.path.dirname(os.path.realpath(__file__ ))
         if not os.path.exists(directory + "/codes"):
                 os.mkdir(directory + "/codes")
         if student_level == "lifeclass":
@@ -68,7 +68,7 @@ def generate(request):
                 os.mkdir(directory + "/codes/sol2")
             directory = directory + "/codes/sol2"
 
-        filename = directory + "/" + student_number
+        filename = os.path.join(directory, student_number)
         fh = open(''.join([filename, '.png']), "wb")
         fh.write(buffered.getvalue())
         fh.close()
@@ -76,7 +76,7 @@ def generate(request):
         delim = True
         fname = ''.join([filename, '.png'])
 
-        return JsonResponse({'code': str(code_64_encode, 'utf-8'), 'id': code_instance.id})
+        return JsonResponse({'code': str(code_64_encode, 'utf-8'), 'id': code_instance.id, 'filename': fname})
 
 def addstudent(request):
     if request.method == 'GET':
