@@ -43,15 +43,19 @@
                   Student Attendance Records
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/studentstab/">Lifeclass</a>
+                  <a class="dropdown-item" href="/lifeclassstudents/">Lifeclass</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">School of Leaders 1</a>
+                  <a class="dropdown-item" href="/sol1students/">School of Leaders 1</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">School of Leaders 2</a>
+                  <a class="dropdown-item" href="/sol2students/">School of Leaders 2</a>
                 </div>
               </li>
             </ul>
           </div>
+           <div class="form-inline">
+              <input id="student_searchnum" class="form-control mr-sm-2" type="search" placeholder="Search student" aria-label="Search">
+              <button class="btn btn-info button" onclick="searchStudent()" >Search</button>
+            </div>
         </nav>
         <div class="tab-content">
             <div class="panel panel-default tab-pane active outer-div" id="property_tab" role="tabpanel" style="margin:0px auto">
@@ -63,35 +67,33 @@
                                     <td style="padding-top: 5px; padding-left: 5px;">
                                     <form class="form-inline">
                                       <select class="custom-select my-1 mr-sm-2 form-control form" onChange=selectedLevel() id="student_level">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Lifeclass</option>
-                                        <option value="2">School of Leaders 1</option>
-                                        <option value="3">School of Leaders 2</option>
+                                        <option selected>Click to Choose...</option>
+                                        <option value="lifeclass">Lifeclass</option>
+                                        <option value="sol1">School of Leaders 1</option>
+                                        <option value="sol2">School of Leaders 2</option>
                                       </select>
                                     </form>
                                     </td>
                                   </tr>
                                   <tr><th>Student Number: </th><td style="padding-top: 5px; padding-left: 5px;">
-                                    <input type="text" class="form-control form" id="student_number" value="{% now 'y' %} - {{ studentnum }}" disabled></td></tr>
+                                    <input  type="text" class="form-control form" id="student_number" value="{% now 'y' %}-{{ studentnum }}" disabled></td>
+                                  </tr>
                                   <tr><th>Name: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_name"></td></tr>
                                   <tr><th>Nickname: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_nickname"></td></tr>
-                                  <tr><th>Birthdate: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="date" class="form-control" id="student_birthdate"></td></tr>
+                                  <tr><th>Birthdate: </th><td style="padding-top: 5px; padding-left: 5px;"><input required type="date" class="form-control" id="student_birthdate"></td></tr>
                                   <tr><th>Contact Number: </th><td style="padding-top: 5px; padding-left: 5px;">
-                                    <input type="text" class="form-control" maxlength="13" name="phone" required="required" title="" type="tel" value="+639" id="student_contact"></td></tr>
+                                    <input type="text" class="form-control" maxlength="11" name="phone" placeholder="09091234567" type="tel" id="student_contact"></td></tr>
                                   <tr><th>Cell Leader: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_leader"></td></tr>
-                                  <tr><th>Contact number of CL: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_contactleader"></td></tr>
+                                  <tr><th>Contact number of CL: </th><td style="padding-top: 5px; padding-left: 5px;"><input input type="text" class="form-control" maxlength="11" name="phone" placeholder="09091234567" type="tel" id="student_contactleader"></td></tr>
                                   <tr><th>Network: </th><td style="padding-top: 5px; padding-left: 5px;"><input type="text" class="form-control" id="student_network"></td></tr>
                               </table>
                               <br>
-                              <button style="margin-left: 20px;" class="btn btn-primary button" onclick="submit_request_property()">Generate Code</button>
+                              <button style="margin-left: 20px;" class="btn btn-primary button" onclick="submit_request_property()">Generate Code and Save</button>
                               <button style="margin-left: 5px;" class="btn btn-warning button" onclick="clear_fields()">Clear</button>
                           </div>
                     <div style="padding-left: 20%;">
-                        <br><br><br><br>
-                        <img id="preview_property_tag"/>
-                        <br><br>
+                        <img id="preview_property_tag" style="margin-left: 130px;"/>
                         <input type="hidden" name="data_property" id="data_property">
-                        <button id="print_button" class="btn btn-success" onclick="print_property_tag()" style="display: none; margin-left: 190px;">Save Student Details</button>
                     </div>
                 </div>
             </div>
@@ -99,19 +101,115 @@
         <div class="modal" style="position: fixed; left: 45%; top: 33%;" data-backdrop="static" data-keyboard="false" id="loading_img">
             <img style="height: 200px; width: 200px;" src="{% static 'img/spin.gif' %}" />
         </div>
+         <div class="modal fade" id="alertModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <p>Input Fields are required.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="student_details" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Student Details</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">                      
+                              <table>
+                                  <tr><th>Level: </th>
+                                    <td style="padding-top: 5px; padding-left: 5px;">
+                                    <form class="form-inline">
+                                      <select readonly class="custom-select my-1 mr-sm-2 form-control form" onChange=selectedLevel() id="details_student_level">
+                                        <option selected>Click to Choose...</option>
+                                        <option value="lifeclass">Lifeclass</option>
+                                        <option value="sol1">School of Leaders 1</option>
+                                        <option value="sol2">School of Leaders 2</option>
+                                      </select>
+                                    </form>
+                                    </td>
+                                  </tr>
+                                  <tr><th>Student Number: </th><td style="padding-top: 5px; padding-left: 5px;">
+                                    <input  type="text" class="form-control form" id="details_student_number" value="{% now 'y' %}-{{ studentnum }}" disabled></td>
+                                  </tr>
+                                  <tr><th>Name: </th><td style="padding-top: 5px; padding-left: 5px;"><input readonly type="text" class="form-control" id="details_student_name"></td></tr>
+                                  <tr><th>Nickname: </th><td style="padding-top: 5px; padding-left: 5px;"><input readonly type="text" class="form-control" id="details_student_nickname"></td></tr>
+                                  <tr><th>Birthdate: </th><td style="padding-top: 5px; padding-left: 5px;"><input readonly required type="date" class="form-control" id="details_student_birthdate"></td></tr>
+                                  <tr><th>Contact Number: </th><td style="padding-top: 5px; padding-left: 5px;">
+                                    <input readonly type="text" class="form-control" maxlength="11" name="phone" placeholder="09091234567" type="tel" id="details_student_contact"></td></tr>
+                                  <tr><th>Cell Leader: </th><td style="padding-top: 5px; padding-left: 5px;"><input readonly type="text" class="form-control" id="details_student_leader"></td></tr>
+                                  <tr><th>Contact number of CL: </th><td style="padding-top: 5px; padding-left: 5px;"><input input readonly type="text" class="form-control" maxlength="11" name="phone" placeholder="09091234567" type="tel" id="details_student_contactleader"></td></tr>
+                                  <tr><th>Network: </th><td style="padding-top: 5px; padding-left: 5px;"><input readonly type="text" class="form-control" id="details_student_network"></td></tr>
+                              </table>
+                             </div><div class="modal-footer">
+                        <table>
+                            <tr>
+                                <td><button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button></td>
+                                <td><button type="submit" class="btn btn-default" style="margin-left: 10px;" id="edit_student" onclick="editStudent()"></button>Edit Student</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
         <script type="text/javascript">
+            function editStudent(){
+                document.getElementById('details_student_level').removeAttribute('readonly');
+                document.getElementById('details_student_name').removeAttribute('readonly');
+                document.getElementById('details_student_nickname').removeAttribute('readonly');
+                document.getElementById('details_student_birthdate').removeAttribute('readonly');
+                document.getElementById('details_student_contact').removeAttribute('readonly');
+                document.getElementById('details_student_leader').removeAttribute('readonly');
+                document.getElementById('details_student_contactleader').removeAttribute('readonly');
+                document.getElementById('details_student_network').removeAttribute('readonly');
+                document.getElementById('edit_student').value = "Generate new code";
+            }
+
+            function searchStudent(){
+              var student_searchnum = document.getElementById('student_searchnum').value;
+              console.log(student_searchnum)
+              $("#loading_img").modal('show');    
+                $.getJSON("searchStudent/?student_searchnum=" + student_searchnum, {}, function(result){
+                    if(result.message = "success"){
+                          document.getElementById('details_student_level').value = result.student_level;
+                          document.getElementById('details_student_number').value = result.student_number;
+                          document.getElementById('details_student_name').value = result.student_name;
+                          document.getElementById('details_student_nickname').value = result.student_nickname;
+                          document.getElementById('details_student_birthdate').value = result.student_birthdate;
+                          document.getElementById('details_student_contact').value = result.student_contact;
+                          document.getElementById('details_student_leader').value = result.student_leader;
+                          document.getElementById('details_student_contactleader').value = result.student_contactleader;
+                          document.getElementById('details_student_network').value = result.student_network;
+                          $("#student_details").modal('show');   
+                    }else if(result.message="fail"){
+                      alert(result.message)
+                    }
+                    $("#loading_img").modal('hide');    
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
+                    $("#loading_img").modal('hide');
+                });
+            }
             function selectedLevel() {
                 var level = document.getElementById('student_level').value;
-                if(level!=1){
+                if(level!="lifeclass"){
                     document.getElementById("student_number").disabled = false;
                     document.getElementById("student_number").value = '';
+                    clear_fields();
                 }else{
                     document.getElementById("student_number").disabled = true;
-                    document.getElementById("student_number").value = "{% now 'y' %} - {{ studentnum }}";
+                    document.getElementById("student_number").value = "{% now 'y' %}-{{ studentnum }}";
                 }
             }
             function submit_request_property(){
-                $("#loading_img").modal('show');
                 var student_level = document.getElementById('student_level').value;
                 var student_number = document.getElementById('student_number').value;
                 var student_name = document.getElementById('student_name').value;
@@ -121,17 +219,27 @@
                 var student_leader = document.getElementById('student_leader').value;
                 var student_contactleader = document.getElementById('student_contactleader').value;
                 var student_network = document.getElementById('student_network').value;
+                if(student_level == "Click to Choose..." || student_name == "" || student_number == "" || student_nickname == "" || student_contact == "" || student_leader == "" || student_contactleader == "" || student_network == ""){
+                  $("#alertModal").modal('show'); 
+                  return false;
+                }
+                $("#loading_img").modal('show');                
                 $.getJSON("generate/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
-                    document.getElementById('preview_property_tag').width = "576";
+                    document.getElementById('preview_property_tag').width = "200";
                     document.getElementById('preview_property_tag').height = "200";
                     document.getElementById('preview_property_tag').src = "data:image/png;base64, " + result.code;
                     document.getElementById('data_property').value = result.id;
-                    document.getElementById('print_button').style.display = "block";
                     $("#loading_img").modal('hide');
                 }).fail(function( jqxhr, textStatus, error ) {
                     var err = textStatus + ', ' + error;
                     alert( "Request Failed: " + err);
                     $("#loading_img").modal('hide');
+                });
+
+                $.getJSON("addstudent/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
                 });
 
             }
@@ -146,17 +254,16 @@
                 document.getElementById('student_contactleader').value = "";
                 document.getElementById('student_network').value = "";
                 document.getElementById('data_property').value = "";
-                document.getElementById('print_button').style.display = "none";
+                // document.getElementById('print_button').style.display = "none";
             }
 
             function print_property_tag(){
-                // var data = document.getElementById('data_property').value;               
-                // var link = document.createElement('a');
-                // link.href = 'images.jpg';
-                // link.download = data;
-                // document.body.appendChild(link);
-                // link.click();
-                // document.body.removeChild(link);
+                 var data = document.getElementById('preview_property_tag').toString();            
+                 $.getJSON("print/?data=" + data, {}, function(result){
+                }).fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    alert( "Request Failed: " + err);
+                });
 
                 var student_number = document.getElementById('student_number').value;
                 var student_name = document.getElementById('student_name').value;

@@ -21,6 +21,6 @@ class Students(models.Model):
     student_leader = models.CharField(max_length=200,null=True,blank=True)
     student_contactleader = models.CharField(max_length=200,null=True,blank=True)
     student_network = models.CharField(max_length=200,null=True,blank=True)
-    
+
     class Meta:
         get_latest_by = ['student_number']

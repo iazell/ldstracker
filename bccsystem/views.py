@@ -51,20 +51,32 @@ def generate(request):
         code_instance = Codes.objects.create(
             code_bytes = code_64_encode
         )
+
+        directory = os.path.expanduser('~/Downloads')
+        if not os.path.exists(directory + "/codes"):
+                os.mkdir(directory + "/codes")
+        if student_level == "lifeclass":
+            if not os.path.exists(directory + "/codes/lifeclass"):
+                os.mkdir(directory + "/codes/lifeclass")
+            directory = directory + "/codes/lifeclass"
+        if student_level == "sol1":
+            if not os.path.exists(directory + "/codes/sol1"):
+                os.mkdir(directory + "/codes/sol1")
+            directory = directory + "/codes/sol1"
+        if student_level == "sol2":
+            if not os.path.exists(directory + "/codes/sol2"):
+                os.mkdir(directory + "/codes/sol2")
+            directory = directory + "/codes/sol2"
+
+        filename = directory + "/" + student_number
+        fh = open(''.join([filename, '.png']), "wb")
+        fh.write(buffered.getvalue())
+        fh.close()
+        isfile = False
+        delim = True
+        fname = ''.join([filename, '.png'])
+
         return JsonResponse({'code': str(code_64_encode, 'utf-8'), 'id': code_instance.id})
-
-def print(request):    
-        if request.method == 'GET':
-            data_id = request.GET.get('data')
-            data = Codes.objects.get(id = data_id).code_bytes
-            fh = open(''.join([str(data_id), '.png']), "wb")
-            fh.write(base64.b64decode(data[2:(len(data) - 1)]))
-            fh.close()
-            isfile = False
-            delim = True
-            fname = ''.join([str(data_id), '.png'])
-        return JsonResponse({'message': 'Success!'})
-
 
 def addstudent(request):
     if request.method == 'GET':
@@ -78,6 +90,7 @@ def addstudent(request):
         student_contactleader = request.GET.get('student_contactleader')
         student_network = request.GET.get('student_network')
         student_instance = Students.objects.create(
+            student_level = student_level,
             student_number = student_number,
             student_name = student_name,
             student_nickname = student_nickname,
@@ -89,9 +102,47 @@ def addstudent(request):
         )
     return JsonResponse({'message': 'Success!'})
 
-def studentstab(request):
-    students = Students.objects.all()
-    return render(request, 'student.html', {'students': students})
+def lifeclassstudents(request):
+    students = Students.objects.filter(student_level="lifeclass")
+    return render(request, 'lifeclass_student.html', {'students': students})
+
+def sol1students(request):
+    students = Students.objects.filter(student_level="sol1")
+    return render(request, 'sol1_student.html', {'students': students})
+
+def sol2students(request):
+    students = Students.objects.filter(student_level="sol2")
+    return render(request, 'sol2_student.html', {'students': students})
+
+def searchStudent(request):
+    if request.method == 'GET':
+        student_searchnum = request.GET.get('student_searchnum')
+        try:
+            student_instance = Students.objects.get(student_number = student_searchnum) 
+        except Students.DoesNotExist:
+            try:
+                student_instance = Students.objects.get(student_name = student_searchnum)
+            except Students.DoesNotExist:
+                student_instance = None
+
+        if student_instance == None:
+            message = "Enter student number or student name only"
+        else:
+            message = "success"
+
+        return_data = {
+            'message' : message,
+            'student_level' : student_instance.student_level,
+            'student_number' : student_instance.student_number,
+            'student_name' : student_instance.student_name,
+            'student_nickname' : student_instance.student_nickname,
+            'student_birthdate' : student_instance.student_birthdate,
+            'student_contact' : student_instance.student_contact,
+            'student_leader' : student_instance.student_leader,
+            'student_contactleader' : student_instance.student_contactleader,
+            'student_network' : student_instance.student_network
+        }
+        return JsonResponse(return_data)
 
 def home(request):
     try:

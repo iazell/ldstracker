@@ -1,0 +1,110 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+        <title>BCC</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" integrity="sha256-ABVkpwb9K9PxubvRrHMkk6wmWcIHUE9eBxNZLXYQ84k=" crossorigin="anonymous"></script>
+    </head>
+    <style type="text/css">
+     .outer-div{
+             position: block;
+             bottom: 30px;
+             width: 50%;
+        }
+        .inner{
+            padding-left: 20%;
+            padding-right: 15%;
+        }
+        .form{
+            width: 300px;
+        }
+        .button{
+          width: 200px;
+        }
+    </style>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">BCC LDS Tracking System</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">      
+              <li class="nav-item">
+                <a class="nav-link" href="/">QR Code Generator</a></li>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Student Attendance Records
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/lifeclassstudents/">Lifeclass</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/sol1students/">School of Leaders 1</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/sol2students/">School of Leaders 2</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="tab-content">
+                   <table id="student_table" style="width:98%; margin-left: 20px;" class="table table-bordered table-striped table-hover table-responsive table-info">
+                      <thead>
+                          <!-- <th style="font-size: 100%;">id</th> -->
+                          <!-- <th style="font-size: 100%;">Student Level</th> -->
+                          <th style="font-size: 100%;">Student Number</th>
+                          <th style="font-size: 100%;">Name</th>
+                          <th style="font-size: 100%;">Nickname</th>
+                          <th class="col-sm-1" style="font-size: 100%;">Birthdate</th>
+                          <th class="col-sm-2"style="font-size: 100%;">Contact Number</th>
+                          <th style="font-size: 100%;">Leader</th>
+                          <th class="col-sm-2"style="font-size: 100%;">Contact Leader</th>
+                          <th style="font-size: 100%;">Network</th>
+                          <th style="font-size: 100%;">Week 1</th>
+                          <th style="font-size: 100%;">Week 2</th>
+                          <th style="font-size: 100%;">Week 3</th>
+                          <th style="font-size: 100%;">Week 4</th>
+                          <th style="font-size: 100%;">Week 5</th>
+                          <th style="font-size: 100%;">Week 6</th>
+                          <th style="font-size: 100%;">Week 7</th>
+                          <th style="font-size: 100%;">Week 8</th>
+                          <th style="font-size: 100%;">Week 9</th>
+                          <th style="font-size: 100%;">Week 10</th>      
+                          <th style="font-size: 100%; display: none">id</th>
+                      </thead>
+                      <tbody>
+                          {% for student in students %}
+                          <tr>
+                              <!-- <td style="font-size: 100%;">{{ forloop.counter }}</td> -->
+                              <!-- <td style="font-size: 100%;">{{ student.student_level }}</td> -->
+                              <td style="font-size: 100%;">{{ student.student_number }}</td>
+                              <td style="font-size: 100%;">{{ student.student_name }}</td>
+                              <td style="font-size: 100%;">{{ student.student_nickname }}</td>
+                              <td style="font-size: 100%;">{{ student.student_birthdate }}</td>
+                              <td style="font-size: 100%;">{{ student.student_contact }}</td>
+                              <td style="font-size: 100%;">{{ student.student_leader }}</td>
+                              <td style="font-size: 100%;">{{ student.student_contactleader }}</td>
+                              <td style="font-size: 100%;">{{ student.student_network }}</td>
+                              <td bgcolor="#FF0000" style="font-size: 100%;"></td> 
+                              <td bgcolor="#FF0000" style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td style="font-size: 100%;"></td>
+                              <td bgcolor="#00FF00" style="font-size: 100%;"></td>
+                              <td style="font-size: 100%; display: none">{{ student.id }}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+          </div>
+        </body>
+</html>
