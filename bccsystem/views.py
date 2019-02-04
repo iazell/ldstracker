@@ -12,14 +12,17 @@ from django.contrib import messages
 
 from .forms import StudentForm
 from blog.models import Students
+from blog.models import AttendanceLifeclass
 from .codegenerator import CodeGenerator
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from blog.serializers import StudentsSerializer
+from blog.serializers import AttendanceStudentSerializer
 
 def index(request):
     if request.method == 'POST':
@@ -149,7 +152,8 @@ def editstudent(request):
 
 def lifeclassstudents(request):
     students = Students.objects.filter(student_level="lifeclass")
-    return render(request, 'lifeclass_student.html', {'students': students})
+    attendance = AttendanceLifeclass.objects.all()
+    return render(request, 'lifeclass_student.html', {'students': students, 'attendance':attendance})
 
 def sol1students(request):
     students = Students.objects.filter(student_level="sol1")
@@ -166,7 +170,7 @@ def searchStudent(request):
             student_instance = Students.objects.get(student_number = student_searchnum) 
         except Students.DoesNotExist:
             try:
-                student_instance = Students.objects.get(student_name = student_searchnum)
+                student_instance = Students.objects.filter(student_name = student_searchnum).order_by('id').first()
             except Students.DoesNotExist:
                 student_instance = None
 
@@ -191,7 +195,7 @@ def searchStudent(request):
 
 def home(request):
     try:
-        studentnum = Students.objects.latest().student_number
+        studentnum = Students.objects.filter(student_level="lifeclass").latest().student_number
         studentnum = int(studentnum[-3:]) + 1
         studentnum = '%03d' % studentnum
     except Students.DoesNotExist:
@@ -204,3 +208,7 @@ class StudentList(ListAPIView):
     def get_queryset(self):
         queryset = Students.objects.all()
         return queryset
+
+class AttendanceStudent(ListCreateAPIView):
+    queryset = AttendanceLifeclass.objects.all()
+    serializer_class = AttendanceStudentSerializer

@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 from django.contrib import admin
 from .views import (
-    StudentList)
+    StudentList,
+    AttendanceStudent)
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -16,4 +17,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('getstudents/', StudentList.as_view(), name='api-students'),
+    path('studentattendance/', AttendanceStudent.as_view(), name='api-attendance-students'),
 ]

@@ -34,14 +34,17 @@ class Students(models.Model):
 class AttendanceLifeclass(models.Model):
     class_week = models.CharField(max_length=200,null=True,blank=True)
     student_number = models.CharField(max_length=200,null=True,blank=True)
-    student_present = models.CharField(max_length=200,null=True,blank=True)
+    student_status = models.CharField(max_length=200,null=True,blank=True)
+
+    def __str__(self):
+        return self.student_number
 
 class AttendanceSOL1(models.Model):
     class_week = models.CharField(max_length=200,null=True,blank=True)
     student_number = models.CharField(max_length=200,null=True,blank=True)
-    student_present = models.CharField(max_length=200,null=True,blank=True)
+    student_status = models.CharField(max_length=200,null=True,blank=True)
 
 class AttendanceSOL2(models.Model):
     class_week = models.CharField(max_length=200,null=True,blank=True)
     student_number = models.CharField(max_length=200,null=True,blank=True)
-    student_present = models.CharField(max_length=200,null=True,blank=True)    
+    student_status = models.CharField(max_length=200,null=True,blank=True)    
