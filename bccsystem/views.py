@@ -14,6 +14,13 @@ from .forms import StudentForm
 from blog.models import Students
 from .codegenerator import CodeGenerator
 
+from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
+
+from blog.serializers import StudentsSerializer
+
 def index(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -190,3 +197,10 @@ def home(request):
     except Students.DoesNotExist:
         studentnum = '000'
     return render(request, 'code_home.html', {'studentnum':studentnum})
+
+class StudentList(ListAPIView):
+    serializer_class = StudentsSerializer
+
+    def get_queryset(self):
+        queryset = Students.objects.all()
+        return queryset

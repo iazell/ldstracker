@@ -22,5 +22,26 @@ class Students(models.Model):
     student_contactleader = models.CharField(max_length=200,null=True,blank=True)
     student_network = models.CharField(max_length=200,null=True,blank=True)
 
+    def __unicode__(self):
+        return "[{}] {}".format(self.student_number, self.student_name)
+
+    def __str__(self):
+        return "[{}] {}".format(self.student_number, self.student_name)
+    
     class Meta:
         get_latest_by = ['student_number']
+
+class AttendanceLifeclass(models.Model):
+    class_week = models.CharField(max_length=200,null=True,blank=True)
+    student_number = models.CharField(max_length=200,null=True,blank=True)
+    student_present = models.CharField(max_length=200,null=True,blank=True)
+
+class AttendanceSOL1(models.Model):
+    class_week = models.CharField(max_length=200,null=True,blank=True)
+    student_number = models.CharField(max_length=200,null=True,blank=True)
+    student_present = models.CharField(max_length=200,null=True,blank=True)
+
+class AttendanceSOL2(models.Model):
+    class_week = models.CharField(max_length=200,null=True,blank=True)
+    student_number = models.CharField(max_length=200,null=True,blank=True)
+    student_present = models.CharField(max_length=200,null=True,blank=True)    
