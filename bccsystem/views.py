@@ -14,6 +14,7 @@ from .forms import StudentForm
 from blog.models import Students
 from blog.models import AttendanceLifeclass
 from .codegenerator import CodeGenerator
+from blog.models import Network
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
@@ -198,6 +199,7 @@ def home(request):
         studentnum = Students.objects.filter(student_level="lifeclass").latest().student_number
         studentnum = int(studentnum[-3:]) + 1
         studentnum = '%03d' % studentnum
+        networks = Network.objects.all()
     except Students.DoesNotExist:
         studentnum = '000'
     return render(request, 'code_home.html', {'studentnum':studentnum})
@@ -212,3 +214,4 @@ class StudentList(ListAPIView):
 class AttendanceStudent(ListCreateAPIView):
     queryset = AttendanceLifeclass.objects.all()
     serializer_class = AttendanceStudentSerializer
+    return render(request, 'code_home.html', {'studentnum':studentnum, 'networks': networks})

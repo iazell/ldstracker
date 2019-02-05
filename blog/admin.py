@@ -5,3 +5,7 @@ from blog.models import AttendanceLifeclass
 
 admin.site.register(Students)
 admin.site.register(AttendanceLifeclass)
+from blog.models import Network
+
+admin.site.register(Students)
+admin.site.register(Network)
