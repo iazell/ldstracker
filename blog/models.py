@@ -31,7 +31,6 @@ class Students(models.Model):
     class Meta:
         get_latest_by = ['student_number']
 
-<<<<<<< Updated upstream
 class AttendanceLifeclass(models.Model):
     class_week = models.CharField(max_length=200,null=True,blank=True)
     student_number = models.CharField(max_length=200,null=True,blank=True)

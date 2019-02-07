@@ -214,4 +214,3 @@ class StudentList(ListAPIView):
 class AttendanceStudent(ListCreateAPIView):
     queryset = AttendanceLifeclass.objects.all()
     serializer_class = AttendanceStudentSerializer
-    return render(request, 'code_home.html', {'studentnum':studentnum, 'networks': networks})
