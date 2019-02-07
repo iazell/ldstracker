@@ -9,6 +9,7 @@ import base64
 import subprocess
 import os.path
 from django.contrib import messages
+from tablib import Dataset
 
 from .forms import StudentForm
 from blog.models import Students
@@ -24,8 +25,13 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
+from .resources import StudentResource
+
+
 from blog.serializers import StudentsSerializer
-from blog.serializers import AttendanceStudentSerializer
+from blog.serializers import AttendanceStudentLifeclassSerializer
+from blog.serializers import AttendanceStudentSOL1Serializer
+from blog.serializers import AttendanceStudentSOL2Serializer
 
 def index(request):
     if request.method == 'POST':
@@ -206,7 +212,8 @@ def home(request):
         networks = Network.objects.all()
     except Students.DoesNotExist:
         studentnum = '000'
-    return render(request, 'code_home.html', {'studentnum':studentnum})
+        networks = Network.objects.all()
+    return render(request, 'code_home.html', {'studentnum':studentnum, 'networks':networks})
 
 class StudentList(ListAPIView):
     serializer_class = StudentsSerializer
@@ -215,6 +222,35 @@ class StudentList(ListAPIView):
         queryset = Students.objects.all()
         return queryset
 
-class AttendanceStudent(ListCreateAPIView):
+class AttendanceStudentLifeclass(ListCreateAPIView):
     queryset = AttendanceLifeclass.objects.all()
-    serializer_class = AttendanceStudentSerializer
+    serializer_class = AttendanceStudentLifeclassSerializer
+
+class AttendanceStudentSOL1(ListCreateAPIView):
+    queryset = AttendanceSOL1.objects.all()
+    serializer_class = AttendanceStudentSOL1Serializer
+
+class AttendanceStudentSOL2(ListCreateAPIView):
+    queryset = AttendanceSOL2.objects.all()
+    serializer_class = AttendanceStudentSOL2Serializer
+
+def export(request):
+    student_resource = StudentResource()
+    dataset = student_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="students.xls"'
+    return response
+
+def simple_upload(request):
+    if request.method == 'POST':
+        student_resource = StudentResource()
+        dataset = Dataset()
+        new_students = request.FILES['myfile']
+
+        imported_data = dataset.load(new_students.read())
+        result = student_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+        if not result.has_errors():
+            student_resource.import_data(dataset, dry_run=False)  # Actually import now
+
+    return render(request, 'core/simple_upload.html')

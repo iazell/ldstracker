@@ -99,8 +99,10 @@
                                   </tr>
                               </table>
                               <br>
+                              <br>
                               <button style="margin-left: 20px;" class="btn btn-primary button" onclick="submit_request_property()">Generate Code and Save</button>
                               <button style="margin-left: 5px;" class="btn btn-warning button" onclick="clear_fields()">Clear</button>
+                              <br>
                           </div>
                     <div style="padding-left: 20%;">
                         <img id="preview_property_tag" style="margin-left: 130px;"/>
@@ -169,6 +171,7 @@
                             <tr>
                               <div style="padding-left: 50%;">
                               <td>
+                                <br>
                                 <!-- <img id="image_code" style="margin-left: 130px;"/> -->
                                 <a id="image_download" download>
                                   <img id="image_code" style="margin-left: 130px;">
@@ -194,6 +197,10 @@
               var student_leader = document.getElementById('details_student_leader').value;
               var student_contactleader = document.getElementById('details_student_contactleader').value;
               var student_network = document.getElementById('details_student_network').value;
+
+              console.log(student_level)
+              console.log(student_number)
+              console.log(student_name)
 
               $("#loading_img").modal('show');                
                 $.getJSON("generate/?student_level=" + student_level + "&student_number=" + student_number + "&student_name=" + student_name + "&student_nickname=" + student_nickname + "&student_birthdate=" + student_birthdate + "&student_contact=" + student_contact + "&student_leader=" + student_leader + "&student_contactleader=" + student_contactleader + "&student_network=" + student_network, {}, function(result){

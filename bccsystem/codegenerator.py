@@ -11,8 +11,8 @@ class CodeGenerator:
         # create image
         self.code = Image.new(DEFAULT_IMG_MODE, DEFAULT_IMG_SIZE, (255, 255, 255, 0))
 
-        student_details = student_level + student_number + student_name + student_nickname + student_birthdate + student_contact + student_leader + student_contactleader + student_network
-        qrcode = elaphe.barcode('qrcode', student_details, options=dict(version=3), scale=3)
+        student_details = student_level + "," + student_number + "," + student_name + "," + student_nickname + "," + student_contact + "," + student_leader + "," + student_contactleader + "," + student_network
+        qrcode = elaphe.barcode('qrcode', student_details, options=dict(version=7), scale=3)
         qrcode.thumbnail(DEFAULT_IMG_SIZE, Image.ANTIALIAS)
         self.code.paste(qrcode, (int((DEFAULT_IMG_SIZE[0] - qrcode.size[0]) / 2), int((DEFAULT_IMG_SIZE[1] - qrcode.size[1]) / 2)))
 

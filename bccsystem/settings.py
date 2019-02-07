@@ -25,7 +25,7 @@ SECRET_KEY = '=a22g0!b+jh5r59$!b51(fg^k4!$1uw$z7l%p9-9o_h480c1rz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','bcc.pythonanywhere.com', '192.168.99.116']
+ALLOWED_HOSTS = ['localhost','bcc.pythonanywhere.com', '192.168.99.116', '192.168.254.108']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 MEDIA_URL = '/media/'
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bccsystem',
     'blog',
-    'rest_framework'
+    'rest_framework',
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -118,6 +119,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 
 # Static files (CSS, JavaScript, Images)

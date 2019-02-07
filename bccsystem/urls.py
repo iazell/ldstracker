@@ -3,7 +3,9 @@ from . import views
 from django.contrib import admin
 from .views import (
     StudentList,
-    AttendanceStudent)
+    AttendanceStudentLifeclass,
+    AttendanceStudentSOL1,
+    AttendanceStudentSOL2)
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,5 +19,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('getstudents/', StudentList.as_view(), name='api-students'),
-    path('studentattendance/', AttendanceStudent.as_view(), name='api-attendance-students'),
+    path('postattendancelifeclass/', AttendanceStudentLifeclass.as_view(), name='api-attendancelifeclass-students'),
+    path('postattendancesol1/', AttendanceStudentSOL1.as_view(), name='api-attendancesol1-students'),
+    path('postattendancesol2/', AttendanceStudentSOL2.as_view(), name='api-attendancesol2-students'),
 ]
