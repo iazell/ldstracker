@@ -13,6 +13,8 @@ from django.contrib import messages
 from .forms import StudentForm
 from blog.models import Students
 from blog.models import AttendanceLifeclass
+from blog.models import AttendanceSOL1
+from blog.models import AttendanceSOL2
 from .codegenerator import CodeGenerator
 from blog.models import Network
 
@@ -158,11 +160,13 @@ def lifeclassstudents(request):
 
 def sol1students(request):
     students = Students.objects.filter(student_level="sol1")
-    return render(request, 'sol1_student.html', {'students': students})
+    attendance = AttendanceSOL1.objects.all()
+    return render(request, 'sol1_student.html', {'students': students, 'attendance':attendance})
 
 def sol2students(request):
     students = Students.objects.filter(student_level="sol2")
-    return render(request, 'sol2_student.html', {'students': students})
+    attendance = AttendanceSOL2.objects.all()
+    return render(request, 'sol2_student.html', {'students': students, 'attendance':attendance})
 
 def searchStudent(request):
     if request.method == 'GET':

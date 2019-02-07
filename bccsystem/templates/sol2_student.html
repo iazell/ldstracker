@@ -90,16 +90,118 @@
                               <td style="font-size: 100%;">{{ student.student_leader }}</td>
                               <td style="font-size: 100%;">{{ student.student_contactleader }}</td>
                               <td style="font-size: 100%;">{{ student.student_network }}</td>
-                              <td bgcolor="#FF0000" style="font-size: 100%;"></td> 
-                              <td bgcolor="#FF0000" style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td style="font-size: 100%;"></td>
-                              <td bgcolor="#00FF00" style="font-size: 100%;"></td>
+                              {% for studentattendance in attendance %}  
+                                {% if studentattendance.class_week == "1" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "2" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "3" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "4" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "5" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "6" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "7" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "8" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "9" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                                {% if studentattendance.class_week == "10" %}
+                                  {% if studentattendance.student_number == student.student_number %}      
+                                    {% if studentattendance.student_status == "present" %}       
+                                        <td bgcolor="#00FF00" style="font-size: 100%;"></td>  
+                                    {% elif studentattendance.student_status == "absent" %}       
+                                        <td bgcolor="#FF0000" style="font-size: 100%;"></td>    
+                                    {% elif studentattendance.student_status == "late" %}       
+                                        <td bgcolor="#FF1493" style="font-size: 100%;"></td>                                    
+                                    {% endif %}                                                         
+                                  {% endif %} 
+                                {% endif %} 
+                              {% endfor %}
                               <td style="font-size: 100%; display: none">{{ student.id }}</td>
                           </tr>
                           {% endfor %}
